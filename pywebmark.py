@@ -17,12 +17,12 @@ def parsePage(ilt, html):
         l = l // 6
         for i in range(l):
             j = i * 6
-            name = plt[j + 1].split('">')[1].split('<')[0]
-            questionnum = plt[j + 2].split('&nbsp;')[1].split('<')[0]
-            doneornot = plt[j + 3].split('">')[1].split('<')[0]
-            language = plt[j + 4].split('">')[1].split('<')[0]
-            time = plt[j + 5].split('">')[1].split('<')[0].replace('&nbsp;', '')
-            mark = plt[j + 6].split('">')[1].split('<')[0]
+            name = plt[j].split('">')[1].split('<')[0]
+            questionnum = plt[j + 1].split('&nbsp;')[1].split('<')[0]
+            doneornot = plt[j + 2].split('">')[1].split('<')[0]
+            language = plt[j + 3].split('">')[1].split('<')[0]
+            time = plt[j + 4].split('">')[1].split('<')[0].replace('&nbsp;', '')
+            mark = plt[j + 5].split('">')[1].split('<')[0]
             ilt.append([name, questionnum, doneornot, language, time, mark])
     except:
         return ''
