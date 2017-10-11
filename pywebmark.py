@@ -34,7 +34,7 @@ def save_contents(urlist):
             writer.writerow([urlist[i][0],urlist[i][1],urlist[i][2],urlist[i][3],urlist[i][4]])
 def main():
     infolist = []
-    DATA = {"username": 'username', "password": 'password'}//用户名和密码
+    DATA = {"username": 'username', "password": 'password'}
     HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
     html = connect(DATA, HEADERS)
     infolist.append(['用户名', '题目ID', '测评状态', '使用语言', '提交时间', '得分/总分', ])
