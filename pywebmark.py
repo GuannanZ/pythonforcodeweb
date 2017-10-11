@@ -1,6 +1,6 @@
 import requests
-import re
-import pandas as pd
+import csv
+from bs4 import BeautifulSoup
 
 def connect(DATA,HEADERS):
     S = requests.Session()
@@ -10,34 +10,36 @@ def connect(DATA,HEADERS):
     r.encoding = r.apparent_encoding
     return r.text
 
-def parsePage(ilt, html):
+def parsePage(ilt,html):
     try:
-        plt = re.findall('<tr class="active">.*?</tr>', html)
-        l = len(plt)
-        l = l // 6
-        for i in range(l):
-            j = i * 6
-            name = plt[j].split('">')[1].split('<')[0]
-            questionnum = plt[j + 1].split('&nbsp;')[1].split('<')[0]
-            doneornot = plt[j + 2].split('">')[1].split('<')[0]
-            language = plt[j + 3].split('">')[1].split('<')[0]
-            time = plt[j + 4].split('">')[1].split('<')[0].replace('&nbsp;', '')
-            mark = plt[j + 5].split('">')[1].split('<')[0]
-            ilt.append([name, questionnum, doneornot, language, time, mark])
+        soup = BeautifulSoup(html,'lxml')
+        trs =soup.find_all('tr',class_='active')
+        length = len(trs)
+        for i in range(length):
+            usename = trs[i].contents[1].a.text
+            problemid = trs[i].contents[3].a.text
+            status = trs[i].contents[5].text
+            language = trs[i].contents[7].string.replace(' ','').replace('\n','')
+            time = trs[i].contents[9].string
+            result = trs[i].contents[11].a.text
+            ilt.append([ usename ,problemid,status, language, time, result])
     except:
         return ''
 
-def saveGoodslist(ilt):
-    pd.DataFrame(ilt).to_csv('成绩.csv', index=False, header=False)
-
+def save_contents(urlist):
+    with open("D:/成绩.csv",'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(['成绩'])
+        for i in range(len(urlist)):
+            writer.writerow([urlist[i][0],urlist[i][1],urlist[i][2],urlist[i][3],urlist[i][4]])
 def main():
     infolist = []
-    DATA = {"username": 'username', "password": 'password'}
+    DATA = {"username": 'username', "password": 'password'}//用户名和密码
     HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
     html = connect(DATA, HEADERS)
-    infolist.append(['用户名', '题目ID', '测评状态', '使用语言', '提交时间', '得分/总分'])
+    infolist.append(['用户名', '题目ID', '测评状态', '使用语言', '提交时间', '得分/总分', ])
     parsePage(infolist, html)
-    saveGoodslist(infolist)
+    save_contents(infolist)
 main()
 
 
