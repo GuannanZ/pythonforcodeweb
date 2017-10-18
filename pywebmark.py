@@ -31,7 +31,7 @@ def save_contents(urlist):
         writer = csv.writer(f)
         writer.writerow(['成绩'])
         for i in range(len(urlist)):
-            writer.writerow([urlist[i][0],urlist[i][1],urlist[i][2],urlist[i][3],urlist[i][4]])
+            writer.writerow([urlist[i][0],urlist[i][1],urlist[i][2],urlist[i][3],urlist[i][4],urlist[i][5]])
 def main():
     infolist = []
     DATA = {"username": 'username', "password": 'password'}
